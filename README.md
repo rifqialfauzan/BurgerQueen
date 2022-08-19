@@ -14,3 +14,5 @@
 						<li>Mengubah email</li>
 						<li>Mengubah nama</li>
 					</ul>
+
+Periode pengerjaan : Juli - Sekarang
