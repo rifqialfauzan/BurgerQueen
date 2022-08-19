@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="html_head (type)" th:remove="${type}">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[[${title}]] - BurgerQueen</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar" th:fragment="navigation">
+        <div class="nav-logo">
+            <a th:href="@{/}"><h3>BurgerQueen</h3></a>
+        </div>
+        <div class="nav-actions">
+            <div class="cart">
+                <a th:href="@{/cart}"><img th:src="@{/img/cart-shopping-solid.svg}" alt="" /></a>
+            </div>
+            <div class="dropdown" >
+                <div class="profile" sec:authorize="isAuthenticated()">
+                    <img class="profile-photo" src="img/profile-photo.jpg" alt="" />
+                </div>
+                <div class="dropdown-content">
+                    <a th:href="@{/profile}">Profile</a>
+                    <a th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
+            <div class="login" sec:authorize="!isAuthenticated()" >
+                <a th:href="@{/login}" class="login-button"> Login </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <footer id="footer" th:fragment="footer">
+        <div class="footer-container">
+            <div class="footer-subscription">
+                <div class="section-header subscription">
+                    <h3>Subscribe</h3>
+                    <p>to get free coupon and news from us</p>
+                </div>
+                <form action="">
+                    <input type="email" name="email" id="email" placeholder="email" />
+                    <input type="submit" class="submit-button" value="Submit" />
+                </form>
+            </div>
+            <div class="footer-links">
+                <div class="social">
+                    <a href="">Facebook</a>
+                    <a href="">Instagram</a>
+                    <a href="">Tiktok</a>
+                    <a href="">Twitter</a>
+                    <a href="">Email</a>
+                </div>
+                <div class="pages">
+                    <a href="">About</a>
+                    <a href="">Coupon</a>
+                    <a href="">News</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

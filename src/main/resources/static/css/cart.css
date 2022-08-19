@@ -1,0 +1,146 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: poppins, sans-serif;
+	scroll-behavior: smooth;
+}
+
+#cart {
+	width: 80vw;
+	margin: 50px auto;
+}
+
+.cart-wrapper {
+	width: 100%;
+	display: flex;
+	box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+}
+
+.cart-order-items {
+	padding: 25px;
+	flex-basis: 80%;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.8em;
+	text-align: center;
+}
+
+th.menu-item {
+	text-align: left;
+	width: 50%;
+}
+
+th,
+td {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 1em 0.5em;
+}
+
+td {
+	padding-top: 0.5em;
+	height: 80px;
+}
+
+td.order-title {
+	display: flex;
+	align-items: center;
+}
+
+td img {
+	width: 25px;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+td .price {
+	display: inline-block;
+}
+
+.cart-actions {
+	padding: 25px;
+	display: flex;
+	flex-direction: column;
+}
+
+.total-price p {
+	font-size: 0.8em;
+}
+
+.price-disclaimer {
+	margin: 20px 0;
+	font-size: 0.7em;
+}
+
+.btn {
+	padding: 10px;
+	text-decoration: none;
+	color: #000;
+	border-radius: 5px;
+	background-color: #fec260;
+}
+
+.order-button {
+	text-align: center;
+	font-weight: 600;
+}
+
+
+			.wrapper {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: #fff;
+				border-radius: 5px;
+				box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
+
+			}
+			.wrapper span {
+				width: 100%;
+				text-align: center;
+				font-size: 20px;
+				font-weight: 600;
+				cursor: pointer;
+				user-select: none;
+			}
+			.wrapper input.num {
+				text-align: center;
+				width: 30px;
+				font-weight: 500;
+				outline: none;
+				border: none;
+				pointer-events: none;
+			}
+
+			.delete-item{
+				margin-left: 5px;
+			}
+
+			.delete-item img{
+				width: 12px;
+			}
+
+@media (max-width: 450px) {
+	#cart {
+		width: 100vw;
+		margin: 0;
+		padding: 15px;
+	}
+
+	th.menu-item {
+		text-align: center;
+	}
+
+	.cart-wrapper {
+		flex-direction: column;
+	}
+
+	.delete-item {
+		display: none;
+	}
+}

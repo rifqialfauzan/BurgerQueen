@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<div th:replace="fragments :: html_head (type='tag')"></div>
+		<link rel="stylesheet" th:href="@{/css/cart.css}" />
+	</head>
+
+	<body>
+
+
+			<section th:replace="fragments :: navigation"></section>
+
+
+		<section class="container" id="cart">
+			<div class="cart-wrapper">
+				<div class="cart-order-items" >
+					<div th:if = "${nullCart}">
+						<div th:text="${nullCart}"></div>
+					</div>
+					<div th:if = "${nullCart == null}">
+						<table>
+							<tr>
+								<th class="menu-item">Menu Item</th>
+								<th>Quantity</th>
+								<th>Subtotal</th>
+							</tr>
+							<tr th:each="cartItem : ${shoppingCart.cartItem}">
+								<td class="order-title">
+									<img th:src="@{'/img/' + ${cartItem.product.image}}" alt="" />
+									<p class="title">[[${cartItem.product.name}]]</p>
+								</td>
+								<td>
+									<div class="wrapper">
+										<span class="minus">-</span>
+										<input class="num" th:value="${cartItem.quantity}" min="0" step="1" type="number">
+										<span class="plus">+</span>
+									</div>
+								</td>
+								<td>
+									<p class="price">Rp. [[${cartItem.total}]] </p>
+									<a href="#" class="delete-item">
+										<img th:src="@{/img/trash-solid.svg}">
+									</a>
+								</td>
+								<td></td>
+							</tr>
+
+						</table>
+					</div>
+				</div>
+				<div class="cart-actions">
+					<div class="total-price">
+						<p>Order Subtotal*</p>
+						<h1 th:if="${nullCart == null}">Rp. [[${shoppingCart.subtotal}]]</h1>
+						<h1 th:if="${nullCart}">Rp. 0</h1>
+					</div>
+					<p class="price-disclaimer">*Price might change due to your delivery location.</p>
+					<a href="" class="order-button btn">Order</a>
+				</div>
+			</div>
+		</section>
+
+		<section th:replace="fragments :: footer"></section>
+
+			<script>
+			const plus = document.querySelector(".plus"),
+				minus = document.querySelector(".minus"),
+				num = document.querySelector(".num");
+			let a = 1;
+			plus.addEventListener("click", () => {
+				a++;
+				// a = a < 10 ? a : a;
+				num.setAttribute("value", a)
+			});
+
+			minus.addEventListener("click", () => {
+				if (a > 1) {
+					a--;
+					// a = a < 10 ? a : a;
+					num.setAttribute("value", a)
+
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments :: html_head (type='tag')"></div>
+<!--    <link rel="stylesheet" th:href="@{/css/cart.css}" />-->
+</head>
+
+<body>
+<style>
+			* {
+				padding: 0;
+				margin: 0;
+				box-sizing: border-box;
+				font-family: poppins, sans-serif;
+				scroll-behavior: smooth;
+			}
+			.container {
+				margin: 50px auto;
+				width: 400px;
+			}
+
+			.profile-wrapper {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
+				border-radius: 10px;
+			}
+			.user-container {
+				text-align: center;
+				padding: 30px;
+				/* border: 1px solid black; */
+			}
+			table {
+				margin: 0 auto;
+				/* border: 1px solid black; */
+				text-align: right;
+				width: 90%;
+				font-size: 0.8em;
+				border-spacing: 10px;
+			}
+			td {
+				padding-bottom: 20px;
+			}
+			.table-head {
+				text-align: left;
+				font-size: 1em;
+			}
+			.profile-image {
+				width: 200px;
+				height: 200px;
+				border-radius: 100%;
+				overflow: hidden;
+				text-align: center;
+				align-items: center;
+				align-content: center;
+				margin: 0 auto;
+			}
+			.profile-image img {
+				max-height: 100%;
+				max-width: 100%;
+			}
+		</style>
+<header>
+    <section th:replace="fragments :: navigation"></section>
+</header>
+
+<section id="profile" class="container cart-wrapper" >
+    <div class="profile-wrapper" th:object="${profile}">
+        <div class="user-container">
+            <div class="profile-image">
+                <img th:src="@{'/img/' + ${profile.image}}" />
+            </div>
+        </div>
+        <div class="user-container">
+            <table>
+                <tr>
+                    <td class="table-head">Nama</td>
+                    <td>[[${profile.name}]]</td>
+                </tr>
+                <tr>
+                    <td class="table-head">Email</td>
+                    <td>[[${profile.email}]]</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<section th:replace="fragments :: footer"></section>
+</body>
+</html>

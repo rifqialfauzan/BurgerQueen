@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="fragments :: html_head (type='tag')"></div>
+
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+	<body>
+
+	<section th:replace="fragments :: navigation"></section>
+
+
+	<section id="login">
+			<div class="container">
+				<div class="header">
+					<div class="title">
+						<h1>Register</h1>
+					</div>
+					<form class="form" th:action="@{/admin}" method="post">
+						<input type="email" name="email" placeholder="email" />
+						<input type="text" name="name" placeholder="nama" />
+						<input type="password" name="password" placeholder="password" />
+						<input class="btn" type="submit" value="Register" />
+					</form>
+				</div>
+				<div class="register">
+					<p>Already have an account? <a th:href="@{/login}" class="signin">Signin</a></p>
+				</div>
+			</div>
+		</section>
+
+		<section th:replace="fragments :: footer"></section>
+
+	</body>
+</html>

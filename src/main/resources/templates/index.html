@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: html_head (type='none')"></head>
+
+<body>
+    <header>
+        <section th:replace="fragments :: navigation"></section>
+
+        <div class="hero" th:style="'background-image: url(' + @{/img/hero-image-min.png} + ');'">
+            <div class="hero-text">
+                <div class="text-container">
+                    <h1>
+                        burger<br />
+                        <span>make us</span> <br />
+                        happier
+                    </h1>
+                    <a href="#products" class="btn hero-button" type="menu">See Products</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="products">
+        <div class="section-header">Products</div>
+        <div class="products-container">
+            <th:block th:each="productItem : ${products}">
+                <div class="product">
+                    <form th:action="@{/cart}" method="post">
+
+                    <div class="product-header">
+                        <img class="product-image" th:src="@{'/img/' + ${productItem.image}}" alt="" />
+                    </div>
+                    <div class="product-body">
+                        <div class="product-description">
+                            <p class="price">Rp. [[${productItem.price}]]</p>
+                            <p class="title">[[${productItem.name}]]</p>
+                        </div>
+                        <div class="product-button">
+                            <img th:src="@{/img/circle-info-solid.svg}" alt="" class="product-info" />
+                            <input type="hidden" th:value="${productItem.id}" name="id">
+                            <input type="submit" class="btn cart-button" value="Add">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </th:block>
+        </div>
+    </section>
+
+
+    <section th:replace="fragments :: footer"></section>
+</body>
+</html>
