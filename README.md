@@ -15,4 +15,4 @@
 						<li>Mengubah nama</li>
 					</ul>
 
-Periode pengerjaan : Juli - Sekarang
+Periode pengerjaan : Juli 2022 - Agu 2022
