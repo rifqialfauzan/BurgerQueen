@@ -37,9 +37,6 @@ public class SecurityConfiguration {
         return provider;
     }
 
-
-
-
     @Configuration
     @Order(1)
     public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -105,6 +102,7 @@ public class SecurityConfiguration {
                     .formLogin()
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/")
+                    .failureUrl("/login-error")
                     .and()
                     .logout()
                     .logoutUrl("/logout").permitAll()

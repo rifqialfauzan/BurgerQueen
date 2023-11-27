@@ -14,7 +14,8 @@
 						<div class="title">
 							<h1>Login</h1>
 						</div>
-						<form class="form" th:action="${login}" method="post">
+						<form class="form" th:action="@{/login}" method="post">
+							<p th:if="${errorMessage}" th:text="${errorMessage}"></p>
 							<input type="email" name="username" placeholder="email" required/>
 							<input type="password" name="password" placeholder="password" required/>
 							<input class="btn" type="submit" value="Login" />

@@ -40,19 +40,20 @@ public class UserService {
         User find = userRepository.findById(user.getId()).get();
 
         find.setName(user.getName());
-        find.setEmail(user.getEmail());
-        find.setPassword(passwordEncoder.encode(user.getPassword()));
+//        find.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(find);
     }
 
     public void addUser(User user){
         Role role = roleRepository.findByName("ROLE_USER");
+        String image = "default-image.jpg";
 
         User create = new User();
         create.setName(user.getName());
         create.setEmail(user.getEmail());
         create.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        create.setImage(image);
         create.setRoles(Collections.singleton(role));
         userRepository.save(create);
     }

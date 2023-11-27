@@ -15,7 +15,7 @@
 				scroll-behavior: smooth;
 			}
 			.container {
-				margin: 50px auto;
+				margin: 0 auto;
 				width: 400px;
 			}
 
@@ -60,10 +60,19 @@
 				max-height: 100%;
 				max-width: 100%;
 			}
+			.update-arrow{
+			    width: 5px;
+			    margin-left:5px;
+			    cursor:pointer;
+			}
+			.update-arrow:hover{
+<!--			    transition: 0.5s ease-in;-->
+			    transform: scale(2);
+			}
 		</style>
-<header>
+
     <section th:replace="fragments :: navigation"></section>
-</header>
+
 
 <section id="profile" class="container cart-wrapper" >
     <div class="profile-wrapper" th:object="${profile}">
@@ -77,10 +86,12 @@
                 <tr>
                     <td class="table-head">Nama</td>
                     <td>[[${profile.name}]]</td>
+                    <td><a th:href="@{'/profileUpdate/' + ${profile.id}}"><img th:src="@{/img/angle-right-solid.svg}" alt="" class="update-arrow"></a></td>
                 </tr>
                 <tr>
                     <td class="table-head">Email</td>
                     <td>[[${profile.email}]]</td>
+<!--                    <td><a th:href="@{/profileUpdate}"><img th:src="@{/img/angle-right-solid.svg}" alt="" class="update-arrow"></a></td>-->
                 </tr>
             </table>
         </div>

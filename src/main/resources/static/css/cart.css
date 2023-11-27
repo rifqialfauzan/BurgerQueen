@@ -94,26 +94,34 @@ td .price {
 			.wrapper {
 				display: flex;
 				align-items: center;
-				justify-content: center;
+				justify-content: space-evenly;
 				background: #fff;
 				border-radius: 5px;
 				box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
 
 			}
-			.wrapper span {
-				width: 100%;
-				text-align: center;
+
+            .wrapper form{
+            }
+
+			.wrapper input{
+                text-align: center;
+                font-weight: 500;
+                outline: none;
+                border: none;
+			}
+
+			.minus, .plus {
 				font-size: 20px;
 				font-weight: 600;
 				cursor: pointer;
 				user-select: none;
+				background-color: #fff;
+				margin: 0 0;
+
 			}
 			.wrapper input.num {
-				text-align: center;
-				width: 30px;
-				font-weight: 500;
-				outline: none;
-				border: none;
+			    width: 30px;
 				pointer-events: none;
 			}
 

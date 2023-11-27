@@ -31,21 +31,28 @@
 								</td>
 								<td>
 									<div class="wrapper">
-										<span class="minus">-</span>
-										<input class="num" th:value="${cartItem.quantity}" min="0" step="1" type="number">
-										<span class="plus">+</span>
+										<form th:action="@{/subQuantity}" method="post">
+											<input type="hidden" th:value="${cartItem.product.id}" name="id">
+											<input type="submit" class="minus" value="-" >
+										</form>
+										<input class="num" th:value="${cartItem.quantity}" disabled>
+										<form th:action="@{/addQuantity}" method="post">
+											<input type="hidden" th:value="${cartItem.product.id}" name="id">
+											<input type="submit" class="plus" value="+" >
+										</form>
 									</div>
 								</td>
 								<td>
 									<p class="price">Rp. [[${cartItem.total}]] </p>
-									<a href="#" class="delete-item">
+									<a th:href="@{'/deleteItem/' + ${cartItem.product.id}}" class="delete-item">
 										<img th:src="@{/img/trash-solid.svg}">
 									</a>
 								</td>
 								<td></td>
 							</tr>
-
 						</table>
+						<div th:if="${noItem}" th:text="${noItem}" style="text-align:center; margin-top:1em;"></div>
+
 					</div>
 				</div>
 				<div class="cart-actions">
@@ -63,24 +70,24 @@
 		<section th:replace="fragments :: footer"></section>
 
 			<script>
-			const plus = document.querySelector(".plus"),
-				minus = document.querySelector(".minus"),
-				num = document.querySelector(".num");
-			let a = 1;
-			plus.addEventListener("click", () => {
-				a++;
-				// a = a < 10 ? a : a;
-				num.setAttribute("value", a)
-			});
+<!--			const plus = document.querySelector(".plus"),-->
+<!--				minus = document.querySelector(".minus"),-->
+<!--				num = document.querySelector(".num");-->
+<!--			let a = 1;-->
+<!--			plus.addEventListener("click", () => {-->
+<!--				a++;-->
+<!--				// a = a < 10 ? a : a;-->
+<!--				num.setAttribute("value", a)-->
+<!--			});-->
 
-			minus.addEventListener("click", () => {
-				if (a > 1) {
-					a--;
-					// a = a < 10 ? a : a;
-					num.setAttribute("value", a)
+<!--			minus.addEventListener("click", () => {-->
+<!--				if (a > 1) {-->
+<!--					a&#45;&#45;;-->
+<!--					// a = a < 10 ? a : a;-->
+<!--					num.setAttribute("value", a)-->
 
-				}
-			});
+<!--				}-->
+<!--			});-->
 		</script>
 	</body>
 </html>

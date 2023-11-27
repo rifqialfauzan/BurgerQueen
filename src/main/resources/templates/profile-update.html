@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments :: html_head (type='tag')"></div>
+
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+
+<section th:replace="fragments :: navigation"></section>
+
+
+<section id="login">
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>Update</h1>
+            </div>
+            <form class="form" th:action="@{/admin/update}" th:object="${user}" method="post">
+                <input type="hidden" th:value="*{id}" name="id"  />
+                <input type="hidden" th:value="*{email}" name="email"  />
+                <input type="text" th:value="*{name}" name="name"  />
+                <input class="btn" type="submit" value="Submit" />
+                <a class="btn" th:href="@{/profile}">Cancel</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section th:replace="fragments :: footer"></section>
+
+</body>
+</html>

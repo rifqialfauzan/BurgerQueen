@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -35,9 +36,10 @@ public class ShoppingCartService {
         cartItemRepository.deleteById(id);
     }
 
+    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
 
     public ShoppingCart addToCart(Product product, int quantity, User user){
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         ShoppingCart shoppingCart = user.getShoppingCart();
 
         if (shoppingCart == null) {
@@ -53,7 +55,7 @@ public class ShoppingCartService {
                 cartItem.setProduct(product);
                 cartItem.setQuantity(quantity);
                 cartItem.setShoppingCart(shoppingCart);
-                cartItem.setTotal(Double.valueOf(decimalFormat.format((cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
+                cartItem.setTotal(Double.valueOf(decimalFormat.format(((long) cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
                 cartItems.add(cartItem);
 
                 cartItemRepository.save(cartItem);
@@ -64,13 +66,13 @@ public class ShoppingCartService {
                 cartItem.setProduct(product);
                 cartItem.setQuantity(quantity);
                 cartItem.setShoppingCart(shoppingCart);
-                cartItem.setTotal(Double.valueOf(decimalFormat.format((cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
+                cartItem.setTotal(Double.valueOf(decimalFormat.format(((long) cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
 
                 cartItems.add(cartItem);
                 cartItemRepository.save(cartItem);
             } else {
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
-                cartItem.setTotal(Double.valueOf(decimalFormat.format((cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
+                cartItem.setTotal(Double.valueOf(decimalFormat.format(((long) cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
 
                 cartItemRepository.save(cartItem);
             }
@@ -89,7 +91,7 @@ public class ShoppingCartService {
         }
         CartItem cartItem = null;
         for (CartItem item: cartItems){
-            if (item.getProduct().getId() == productId){
+            if (Objects.equals(item.getProduct().getId(), productId)){
             cartItem = item;
             }
         }
@@ -105,4 +107,56 @@ public class ShoppingCartService {
         return subtotal;
     }
 
+    public void addQuantity(Product product, User user) {
+        if (user.getShoppingCart() == null){
+            return;
+        }
+//        Ambil cart dari si user
+        ShoppingCart shoppingCart = user.getShoppingCart();
+//        Ambil semua item dari cartnya si user
+        Set<CartItem> cartItems = shoppingCart.getCartItem();
+//        Pilih spesifik item dari semua item di cart user dengan product id
+        CartItem cartItem = findCartItem(cartItems, product.getId());
+//        Set quantity-nya
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItem.setTotal(Double.valueOf(decimalFormat.format(((long) cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
+        cartItemRepository.save(cartItem);
+        shoppingCart.setSubtotal(subtotal(cartItems));
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    public void subQuantity(Product product, User user) {
+        if (user.getShoppingCart() == null){
+            return;
+        }
+//        Ambil cart dari si user
+        ShoppingCart shoppingCart = user.getShoppingCart();
+//        Ambil semua item dari cartnya si user
+        Set<CartItem> cartItems = shoppingCart.getCartItem();
+//        Pilih spesifik item dari semua item di cart user dengan product id
+        CartItem cartItem = findCartItem(cartItems, product.getId());
+//        Set quantity-nya
+        if (cartItem.getQuantity() > 1){
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItem.setTotal(Double.valueOf(decimalFormat.format(((long) cartItem.getProduct().getPrice() * cartItem.getQuantity()))));
+            cartItemRepository.save(cartItem);
+        }
+        shoppingCart.setSubtotal(subtotal(cartItems));
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+
+//    SALAH SEMUA INI! HARUS PAKAI CUSTOM QUERY, maybe like ( delete from cart_item where product_id = ? )
+    public void deleteCartItem(Product product, User user) {
+        if (user.getShoppingCart() == null){
+            return;
+        }
+        cartItemRepository.deleteCartItem(product.getId(), user.getShoppingCart().getId());
+
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(user.getId()).get();
+        Set<CartItem> cartItems = shoppingCart.getCartItem();
+        shoppingCart.setSubtotal(subtotal(cartItems));
+        shoppingCartRepository.save(shoppingCart);
+
+    }
 }

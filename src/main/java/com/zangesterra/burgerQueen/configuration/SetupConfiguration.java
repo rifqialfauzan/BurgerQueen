@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class SetupConfiguration implements ApplicationListener<ContextRefreshedEvent> {
 
-    Boolean alreadySetup = false;
+    Boolean alreadySetup = true;
 
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;

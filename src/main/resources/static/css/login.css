@@ -64,6 +64,13 @@
 	color: #3b9ae1;
 }
 
+.error {
+    color:red;
+    font-size: 0.7em;
+    text-align:left;
+    margin-left: 10px
+}
+
 @media (max-width: 450px) {
 	#login {
 		padding: 20px;
