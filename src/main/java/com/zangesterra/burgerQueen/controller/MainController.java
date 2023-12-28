@@ -26,8 +26,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
-@Controller
-@RequestMapping({"/", "/index"})
+//@Controller
+//@RequestMapping({"/", "/index"})
 public class MainController {
 
     @Autowired
@@ -45,9 +45,9 @@ public class MainController {
 
     @GetMapping
     public String home(Model model){
-        List<Product> products = productService.allProduct();
+//        List<Product> products = productService.allProduct();
         model.addAttribute("title", "Home");
-        model.addAttribute("products", products);
+//        model.addAttribute("products", products);
         model.addAttribute("user", new User());
         return "index";
     }
@@ -96,7 +96,7 @@ public class MainController {
         if (bindingResult.hasErrors()){
             return "register";
         }
-        userService.addUser(user);
+//        userService.addUser(user);
         return "redirect:/login";
     }
 
@@ -134,8 +134,8 @@ public class MainController {
 
     @GetMapping("profileUpdate/{id}")
     public String profileUpdateForm(Model model,@PathVariable("id") Long id){
-        User user = userService.getUser(id);
-        model.addAttribute("user", user);
+//        User user = userService.getUser(id);
+//        model.addAttribute("user", user);
         model.addAttribute("title", "Update profile");
 
 

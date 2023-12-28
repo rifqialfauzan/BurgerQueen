@@ -44,10 +44,10 @@ public class CartController {
             return "redirect:/login";
         }
 
-        Product product = productService.getProduct(id);
+//        Product product = productService.getProduct(id);
         User user = userService.getUserByEmail(principal.getName());
 
-        shoppingCartService.addToCart(product,quantity,user);
+//        shoppingCartService.addToCart(product,quantity,user);
 
         return "redirect:" + request.getHeader("Referer");
     }
@@ -57,10 +57,10 @@ public class CartController {
                                HttpServletRequest request,
                                Principal principal){
 
-        Product product = productService.getProduct(productId);
+//        Product product = productService.getProduct(productId);
         User user = userService.getUserByEmail(principal.getName());
 
-        shoppingCartService.addQuantity(product,user);
+//        shoppingCartService.addQuantity(product,user);
         return "redirect:" + request.getHeader("Referer");
     }
 
@@ -69,10 +69,10 @@ public class CartController {
                                HttpServletRequest request,
                                Principal principal){
 
-        Product product = productService.getProduct(productId);
+//        Product product = productService.getProduct(productId);
         User user = userService.getUserByEmail(principal.getName());
 
-        shoppingCartService.subQuantity(product,user);
+//        shoppingCartService.subQuantity(product,user);
         return "redirect:" + request.getHeader("Referer");
     }
 
@@ -80,10 +80,10 @@ public class CartController {
     private String deleteCartItem(@PathVariable("id") Long productId,
                                   HttpServletRequest request,
                                   Principal principal){
-        Product product = productService.getProduct(productId);
+//        Product product = productService.getProduct(productId);
         User user = userService.getUserByEmail(principal.getName());
 
-        shoppingCartService.deleteCartItem(product,user);
+//        shoppingCartService.deleteCartItem(product,user);
 
         return "redirect:" + request.getHeader("Referer");
     }

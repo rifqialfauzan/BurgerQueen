@@ -1,61 +1,100 @@
 package com.zangesterra.burgerQueen.service;
 
+import com.zangesterra.burgerQueen.dto.request.RegisterUserRequest;
+import com.zangesterra.burgerQueen.dto.request.UpdateUserRequest;
+import com.zangesterra.burgerQueen.dto.response.UserResponse;
 import com.zangesterra.burgerQueen.entity.Role;
 import com.zangesterra.burgerQueen.entity.User;
 import com.zangesterra.burgerQueen.repository.RoleRepository;
 import com.zangesterra.burgerQueen.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> allUser(){
         return userRepository.findAll();
     }
 
-    public User getUser(Long id){
-        return userRepository.findById(id).get();
+    public UserResponse getUser(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow();
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .image(user.getImage())
+                .build();
     }
 
     public User getUserByEmail(String email){
-        return userRepository.findByEmail(email).get();
+        return userRepository.findByEmail(email).orElseThrow();
+
     }
 
-    public void updateUser(User user){
+    /*
+        PR
+        This is without validation. so if request properties are null, this code will continue to update user detail with null value
+        So later must implement validation
+    */
+    public UserResponse updateUser(UpdateUserRequest request, String email){
+        User user = userRepository.findByEmail(email).orElseThrow();
 
-        User find = userRepository.findById(user.getId()).get();
+        if (Objects.nonNull(request.getName())){
+            user.setName(request.getName());
+        }
 
-        find.setName(user.getName());
-//        find.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(find);
+        if (Objects.nonNull(request.getImage())){
+            user.setImage(request.getImage());
+        }
+
+        if (Objects.nonNull(request.getPassword())){
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        userRepository.save(user);
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .image(user.getImage())
+                .build();
     }
 
-    public void addUser(User user){
+//    PR
+//    This is without validation. so if request properties are null, this code will continue to update user detail with null value
+//    So later must implement validation
+    public UserResponse registerUser(RegisterUserRequest request){
         Role role = roleRepository.findByName("ROLE_USER");
         String image = "default-image.jpg";
 
-        User create = new User();
-        create.setName(user.getName());
-        create.setEmail(user.getEmail());
-        create.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setName(request.getName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        create.setImage(image);
-        create.setRoles(Collections.singleton(role));
-        userRepository.save(create);
+        user.setImage(image);
+        user.setRoles(Collections.singleton(role));
+        userRepository.save(user);
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .image(user.getImage())
+                .build();
     }
 
 }

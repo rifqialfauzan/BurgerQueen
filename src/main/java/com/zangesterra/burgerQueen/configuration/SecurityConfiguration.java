@@ -17,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@EnableWebSecurity
-public class SecurityConfiguration {
+//@EnableWebSecurity
+public class SecurityConfiguration{
 
     private UserDetailService userDetailService;
     private PasswordEncoder passwordEncoder;
@@ -95,22 +95,22 @@ public class SecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests(authz -> authz
-                            .antMatchers("/","/register", "/css/**","/js/**","/img/**").permitAll()
-                            .antMatchers(HttpMethod.POST,"/admin").permitAll()
+                            .antMatchers("/","/ayolah","/register", "/css/**","/js/**","/img/**").permitAll()
+                            .antMatchers(HttpMethod.POST,"/admin", "/ayolah").permitAll()
                             .anyRequest().authenticated()
-                    )
-                    .formLogin()
-                    .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/login-error")
-                    .and()
-                    .logout()
-                    .logoutUrl("/logout").permitAll()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                    .clearAuthentication(true)
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "remember-me")
-                    .logoutSuccessUrl("/login");
+                    );
+//                    .formLogin()
+//                    .loginPage("/login").permitAll()
+//                    .defaultSuccessUrl("/")
+//                    .failureUrl("/login-error")
+//                    .and()
+//                    .logout()
+//                    .logoutUrl("/logout").permitAll()
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+//                    .clearAuthentication(true)
+//                    .invalidateHttpSession(true)
+//                    .deleteCookies("JSESSIONID", "remember-me")
+//                    .logoutSuccessUrl("/login");
         }
     }
 }

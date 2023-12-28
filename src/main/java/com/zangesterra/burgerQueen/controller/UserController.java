@@ -1,46 +1,49 @@
 package com.zangesterra.burgerQueen.controller;
 
-import com.zangesterra.burgerQueen.entity.User;
-import com.zangesterra.burgerQueen.repository.UserRepository;
+import com.zangesterra.burgerQueen.dto.request.RegisterUserRequest;
+import com.zangesterra.burgerQueen.dto.response.UserResponse;
+import com.zangesterra.burgerQueen.dto.request.UpdateUserRequest;
+import com.zangesterra.burgerQueen.dto.response.WebResponse;
 import com.zangesterra.burgerQueen.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Objects;
+import java.security.Principal;
 
-@Controller
-@RequestMapping("/admin")
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") Long id){
-        return userService.getUser(id);
+    final static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @GetMapping()
+    public ResponseEntity<WebResponse<UserResponse>> getUserByEmail(Principal principal){
+        UserResponse user = userService.getUser(principal.getName());
+        return new ResponseEntity<>(WebResponse.<UserResponse>builder().data(user).build(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public List<User> getAllUser(){
-        return userService.allUser();
+    @PostMapping("/update")
+    public ResponseEntity<WebResponse<UserResponse>> updateUser(@RequestBody UpdateUserRequest request, Principal principal){
+        UserResponse user = userService.updateUser(request, principal.getName());
+        return new ResponseEntity<>(WebResponse.<UserResponse>builder().data(user).build(), HttpStatus.OK);
     }
 
-    @PostMapping("update")
-    public String updateUser(@ModelAttribute User user){
-        userService.updateUser(user);
-        return "redirect:/profile";
-    }
-
-    @PostMapping
-    public void addUser( User user){
-        userService.addUser(user);
+    @PostMapping("/register")
+    public ResponseEntity<WebResponse<UserResponse>> registerUser(@RequestBody RegisterUserRequest request){
+        UserResponse userResponse = userService.registerUser(request);
+        return new ResponseEntity<>(WebResponse.<UserResponse>builder().data(userResponse).build(), HttpStatus.CREATED);
     }
 
 }

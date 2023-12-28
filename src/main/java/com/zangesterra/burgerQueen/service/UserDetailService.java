@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserDetailService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserDetailService(UserRepository userRepository) {
