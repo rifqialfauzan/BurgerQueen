@@ -4,6 +4,7 @@ import com.zangesterra.burgerQueen.dto.request.RegisterUserRequest;
 import com.zangesterra.burgerQueen.dto.request.UpdateUserRequest;
 import com.zangesterra.burgerQueen.dto.response.UserResponse;
 import com.zangesterra.burgerQueen.entity.Role;
+import com.zangesterra.burgerQueen.entity.ShoppingCart;
 import com.zangesterra.burgerQueen.entity.User;
 import com.zangesterra.burgerQueen.repository.RoleRepository;
 import com.zangesterra.burgerQueen.repository.UserRepository;
@@ -77,6 +78,7 @@ public class UserService {
 //    PR
 //    This is without validation. so if request properties are null, this code will continue to update user detail with null value
 //    So later must implement validation
+//    BUG : This still can register user with email that already in db (existing user email)
     public UserResponse registerUser(RegisterUserRequest request){
         Role role = roleRepository.findByName("ROLE_USER");
         String image = "default-image.jpg";
@@ -87,6 +89,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         user.setImage(image);
+        user.setShoppingCart(new ShoppingCart());
         user.setRoles(Collections.singleton(role));
         userRepository.save(user);
 

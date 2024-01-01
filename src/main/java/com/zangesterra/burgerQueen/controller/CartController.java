@@ -1,21 +1,11 @@
 package com.zangesterra.burgerQueen.controller;
 
-import com.zangesterra.burgerQueen.entity.CartItem;
-import com.zangesterra.burgerQueen.entity.Product;
-import com.zangesterra.burgerQueen.entity.ShoppingCart;
 import com.zangesterra.burgerQueen.entity.User;
-import com.zangesterra.burgerQueen.repository.ProductRepository;
-import com.zangesterra.burgerQueen.repository.UserRepository;
 import com.zangesterra.burgerQueen.service.ProductService;
-import com.zangesterra.burgerQueen.service.ShoppingCartService;
+import com.zangesterra.burgerQueen.service.ShoppingCartServiceImpl;
 import com.zangesterra.burgerQueen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +15,7 @@ import java.security.Principal;
 public class CartController {
 
     @Autowired
-    private ShoppingCartService shoppingCartService;
+    private ShoppingCartServiceImpl shoppingCartServiceImpl;
 
     @Autowired
     private UserService userService;
