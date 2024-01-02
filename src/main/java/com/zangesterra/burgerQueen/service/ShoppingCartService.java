@@ -1,10 +1,7 @@
 package com.zangesterra.burgerQueen.service;
 
 import com.zangesterra.burgerQueen.dto.response.ShoppingCartResponse;
-import com.zangesterra.burgerQueen.entity.Product;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 
 @Service
 public interface ShoppingCartService {

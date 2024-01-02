@@ -20,6 +20,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+//    -TODO-
+/*
+    * Method that add or sub quantity product in cart still doesn't check the product's stock. So that should be concerned
+*/
+
 @Service
 @RequiredArgsConstructor
 public class ShoppingCartServiceRestImpl implements ShoppingCartService {
@@ -31,10 +36,6 @@ public class ShoppingCartServiceRestImpl implements ShoppingCartService {
 
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-    /*
-        * We need CartItemResponse instead of using ProductResponse since we don't need the stock property
-        * And don't forget to update the ShoppingCartResponse too
-    */
     @Override
     public ShoppingCartResponse getAllUserCartItems(String email) {
         User user = userRepository.findByEmail(email).orElseThrow();
@@ -142,17 +143,97 @@ public class ShoppingCartServiceRestImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartResponse addCartItemQuantity(Long productId, int amount, String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        ShoppingCart userShoppingCart = user.getShoppingCart();
+        Set<CartItem> cartItems = userShoppingCart.getCartItem();
+
+        Set<CartItemResponse> cartItemResponses = new HashSet<>();
+
+        for (CartItem cartItem : cartItems){
+            if (Objects.equals(cartItem.getProduct(), product)){
+                cartItem.setQuantity(cartItem.getQuantity() + amount);
+                cartItem.setTotal(Double.valueOf(decimalFormat.format(calculateTotalPricePerProduct(cartItem.getProduct().getPrice(), cartItem.getQuantity()))));
+                cartItemRepository.save(cartItem);
+
+                userShoppingCart.setUser(user);
+                userShoppingCart.setCartItem(cartItems);
+                userShoppingCart.setSubtotal(calculateTotalPriceOfUserCart(cartItems));
+                shoppingCartRepository.save(userShoppingCart); // save it to db
+
+//                    Map to Response
+                ProductResponse productResponse = mapProductToProductResponse(product);
+                CartItemResponse cartItemResponse = mapCartItemToCartItemResponse(cartItem, productResponse);
+                cartItemResponses.add(cartItemResponse);
+            }
+        }
+
+        return mapShoppingCartToShoppingCartResponse(cartItemResponses, userShoppingCart);
     }
 
     @Override
     public ShoppingCartResponse subCartItemQuantity(Long productId, int amount, String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        ShoppingCart userShoppingCart = user.getShoppingCart();
+        Set<CartItem> cartItems = userShoppingCart.getCartItem();
+
+        Set<CartItemResponse> cartItemResponses = new HashSet<>();
+
+        for (CartItem cartItem : cartItems){
+            if (Objects.equals(cartItem.getProduct(), product)){
+                cartItem.setQuantity(cartItem.getQuantity() - amount);
+                cartItem.setTotal(Double.valueOf(decimalFormat.format(calculateTotalPricePerProduct(cartItem.getProduct().getPrice(), cartItem.getQuantity()))));
+                cartItemRepository.save(cartItem);
+
+                userShoppingCart.setUser(user);
+                userShoppingCart.setCartItem(cartItems);
+                userShoppingCart.setSubtotal(calculateTotalPriceOfUserCart(cartItems));
+                shoppingCartRepository.save(userShoppingCart); // save it to db
+
+//                    Map to Response
+                ProductResponse productResponse = mapProductToProductResponse(product);
+                CartItemResponse cartItemResponse = mapCartItemToCartItemResponse(cartItem, productResponse);
+                cartItemResponses.add(cartItemResponse);
+            }
+        }
+
+        return mapShoppingCartToShoppingCartResponse(cartItemResponses, userShoppingCart);
     }
 
+//      -TODO-
+//    Somehow it works But sometimes it throws concurrent error because I set shoppingCart to Null before deleted it
+//    The problem is I think around foreign key in db
     @Override
     public ShoppingCartResponse removeCartItemFromShoppingCart(Long productId, String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        ShoppingCart userShoppingCart = user.getShoppingCart();
+        Set<CartItem> cartItems = userShoppingCart.getCartItem();
+
+        Set<CartItemResponse> cartItemResponses = new HashSet<>();
+        for (CartItem cartItem : cartItems){
+            if (Objects.equals(cartItem.getProduct(), product)){
+                cartItem.setShoppingCart(null);
+                cartItem.setTotal(0.0);
+                cartItemRepository.deleteById(cartItem.getId());
+
+                userShoppingCart.setUser(user);
+                userShoppingCart.setCartItem(cartItems);
+                userShoppingCart.setSubtotal(calculateTotalPriceOfUserCart(cartItems));
+                shoppingCartRepository.save(userShoppingCart); // save it to db
+
+//                    Map to Response
+                ProductResponse productResponse = mapProductToProductResponse(product);
+                CartItemResponse cartItemResponse = mapCartItemToCartItemResponse(cartItem, productResponse);
+                cartItemResponses.add(cartItemResponse);
+            }
+        }
+
+        return mapShoppingCartToShoppingCartResponse(cartItemResponses, userShoppingCart);
     }
 
     public ProductResponse mapProductToProductResponse(Product product){
