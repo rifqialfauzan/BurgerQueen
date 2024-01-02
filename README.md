@@ -1,4 +1,5 @@
 # BurgerQueen
+<p>(Currently working on separating the backend and the frontend)</p>
 <p>
 						BurgerQueen merupakan aplikasi berbasis web yang dapat melakukan order terhadap produk yang disediakan, yakni burger.
 						<br />
@@ -15,4 +16,8 @@
 						<li>Mengubah nama</li>
 					</ul>
 
-Periode pengerjaan : Juli 2022 - Agu 2022
+![Alt img-1](https://github.com/rifqialfauzan/BurgerQueen/blob/main/src/main/resources/static/img/BQ1-min.png?raw=true)
+
+![Alt img-2](https://github.com/rifqialfauzan/BurgerQueen/blob/main/src/main/resources/static/img/BQ2-min.png?raw=true)
+
+![Alt img-3](https://github.com/rifqialfauzan/BurgerQueen/blob/main/src/main/resources/static/img/BQ3-min.png?raw=true)
