@@ -1,7 +1,7 @@
 package com.zangesterra.burgerQueen.controller;
 
 import com.zangesterra.burgerQueen.entity.User;
-import com.zangesterra.burgerQueen.service.ProductService;
+import com.zangesterra.burgerQueen.service.impl.ProductServiceImpl;
 import com.zangesterra.burgerQueen.service.ShoppingCartServiceImpl;
 import com.zangesterra.burgerQueen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CartController {
     private UserService userService;
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     @PostMapping("cart")
     public String addToCart(

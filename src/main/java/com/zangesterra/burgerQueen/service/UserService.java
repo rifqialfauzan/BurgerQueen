@@ -9,15 +9,21 @@ import com.zangesterra.burgerQueen.entity.User;
 import com.zangesterra.burgerQueen.repository.RoleRepository;
 import com.zangesterra.burgerQueen.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class UserService {
 
     private final UserRepository userRepository;
@@ -46,11 +52,6 @@ public class UserService {
 
     }
 
-    /*
-        PR
-        This is without validation. so if request properties are null, this code will continue to update user detail with null value
-        So later must implement validation
-    */
     public UserResponse updateUser(UpdateUserRequest request, String email){
         User user = userRepository.findByEmail(email).orElseThrow();
 
@@ -75,13 +76,14 @@ public class UserService {
                 .build();
     }
 
-//    PR
-//    This is without validation. so if request properties are null, this code will continue to update user detail with null value
-//    So later must implement validation
-//    BUG : This still can register user with email that already in db (existing user email)
-    public UserResponse registerUser(RegisterUserRequest request){
+    public UserResponse registerUser(@Valid RegisterUserRequest request){
         Role role = roleRepository.findByName("ROLE_USER");
         String image = "default-image.jpg";
+
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+        if (optionalUser.isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already taken");
+        }
 
         User user = new User();
         user.setEmail(request.getEmail());

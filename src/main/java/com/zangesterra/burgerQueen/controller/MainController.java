@@ -1,10 +1,9 @@
 package com.zangesterra.burgerQueen.controller;
 
 import com.zangesterra.burgerQueen.Validator.UserValidator;
-import com.zangesterra.burgerQueen.entity.Product;
 import com.zangesterra.burgerQueen.entity.ShoppingCart;
 import com.zangesterra.burgerQueen.entity.User;
-import com.zangesterra.burgerQueen.service.ProductService;
+import com.zangesterra.burgerQueen.service.impl.ProductServiceImpl;
 import com.zangesterra.burgerQueen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,25 +12,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 //@Controller
 //@RequestMapping({"/", "/index"})
 public class MainController {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     @Autowired
     private AuthenticationManager authenticationManager;
