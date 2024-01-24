@@ -7,6 +7,7 @@ import com.zangesterra.burgerQueen.dto.response.WebResponse;
 import com.zangesterra.burgerQueen.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
+@CrossOrigin
 public class ProductController {
 
     @Autowired
     private ProductServiceImpl productServiceImpl;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<WebResponse<List<ProductResponse>>> getAllProducts(){
         List<ProductResponse> products = productServiceImpl.getAllProducts();
         return new ResponseEntity<>(WebResponse.<List<ProductResponse>>builder().data(products).build(), HttpStatus.OK);

@@ -23,7 +23,8 @@ import java.util.Set;
 //    -TODO-
 /*
     * Method that add or sub quantity product in cart still doesn't check the product's stock. So that should be concerned
-*/
+    * Need to learn to create custom error and error handling
+* */
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +74,10 @@ public class ShoppingCartServiceRestImpl implements ShoppingCartService {
             user.setShoppingCart(new ShoppingCart());
         }
 
+//        if (amount > product.getStock()){
+////            error stock not enough
+//        }
+
         ShoppingCart userShoppingCart = user.getShoppingCart();
         Set<CartItem> cartItems = userShoppingCart.getCartItem();
         CartItem ci = new CartItem();
@@ -95,6 +100,9 @@ public class ShoppingCartServiceRestImpl implements ShoppingCartService {
             for (CartItem cartItem : cartItems){
 //                if it is than add the quantity
                 if (Objects.equals(product, cartItem.getProduct())){
+//                    if (cartItem.getQuantity() + amount > cartItem.getProduct().getStock()){
+//                        // error stock not enough
+//                    }
                     cartItem.setQuantity(cartItem.getQuantity() + amount);
                     cartItem.setTotal(Double.valueOf(decimalFormat.format(calculateTotalPricePerProduct(cartItem.getProduct().getPrice(), cartItem.getQuantity()))));
                     cartItemRepository.save(cartItem); // save changes to db
@@ -184,9 +192,11 @@ public class ShoppingCartServiceRestImpl implements ShoppingCartService {
 
         for (CartItem cartItem : cartItems){
             if (Objects.equals(cartItem.getProduct(), product)){
-                cartItem.setQuantity(cartItem.getQuantity() - amount);
-                cartItem.setTotal(Double.valueOf(decimalFormat.format(calculateTotalPricePerProduct(cartItem.getProduct().getPrice(), cartItem.getQuantity()))));
-                cartItemRepository.save(cartItem);
+                if (cartItem.getQuantity() > 1){
+                    cartItem.setQuantity(cartItem.getQuantity() - amount);
+                    cartItem.setTotal(Double.valueOf(decimalFormat.format(calculateTotalPricePerProduct(cartItem.getProduct().getPrice(), cartItem.getQuantity()))));
+                    cartItemRepository.save(cartItem);
+                }
 
                 userShoppingCart.setUser(user);
                 userShoppingCart.setCartItem(cartItems);
